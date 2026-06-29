@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Realigns AI Gateway Node Example</title>
+  <style>
+    :root { color-scheme: dark; --bg: #07090d; --panel: #111722; --line: rgba(255,255,255,.12); --ink: #f4f7fb; --muted: #9aa7b8; --blue: #9fc7ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; background: radial-gradient(circle at top left, rgba(77,159,255,.18), transparent 34%), var(--bg); color: var(--ink); }
+    main { width: min(960px, calc(100% - 28px)); margin: 0 auto; padding: 32px 0; }
+    header, .card { border: 1px solid var(--line); background: rgba(17,23,34,.82); border-radius: 26px; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+    header { padding: 24px; margin-bottom: 16px; }
+    h1 { margin: 0; letter-spacing: -.04em; font-size: clamp(30px, 5vw, 52px); }
+    p { color: var(--muted); line-height: 1.55; }
+    .card { overflow: hidden; }
+    #messages { min-height: 420px; max-height: 58vh; overflow: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .message { display: flex; }
+    .message.user { justify-content: flex-end; }
+    .bubble { max-width: min(720px, 92%); padding: 13px 15px; border-radius: 18px; line-height: 1.55; white-space: pre-wrap; border: 1px solid var(--line); background: rgba(255,255,255,.06); }
+    .user .bubble { background: linear-gradient(135deg, #f5f9ff, #a9d4ff); color: #06111f; }
+    .error .bubble { color: #ffe2df; background: rgba(255,138,128,.11); }
+    form { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 14px; border-top: 1px solid var(--line); }
+    textarea { width: 100%; resize: vertical; min-height: 60px; max-height: 170px; border: 1px solid var(--line); background: rgba(0,0,0,.25); color: var(--ink); border-radius: 18px; padding: 14px; outline: none; font: inherit; }
+    button { border: 0; border-radius: 18px; padding: 12px 18px; font-weight: 800; cursor: pointer; background: linear-gradient(135deg, #f8fbff, #b8dbff); color: #06111f; }
+    .doc { margin-bottom: 14px; }
+    .doc textarea { min-height: 120px; }
+    label { display: block; margin-bottom: 8px; color: var(--blue); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
+    @media (max-width: 700px) { form { grid-template-columns: 1fr; } button { width: 100%; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Realigns AI Gateway</h1>
+      <p>Node.js + Express example. API key stays on the server. No web search. No model name exposed.</p>
+    </header>
+
+    <section class="doc">
+      <label for="documentText">Optional document context</label>
+      <textarea id="documentText" placeholder="Paste document text here..."></textarea>
+    </section>
+
+    <section class="card">
+      <div id="messages">
+        <div class="message assistant"><div class="bubble">Hello. Ask a question or paste document context first.</div></div>
+      </div>
+      <form id="chatForm">
+        <textarea id="messageInput" placeholder="Ask Realigns Gateway..."></textarea>
+        <button id="sendBtn" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector('#chatForm');
+    const input = document.querySelector('#messageInput');
+    const sendBtn = document.querySelector('#sendBtn');
+    const messages = document.querySelector('#messages');
+    const documentText = document.querySelector('#documentText');
+
+    function addMessage(role, text, extra = '') {
+      const row = document.createElement('div');
+      row.className = `message ${role} ${extra}`.trim();
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return row;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+
+      input.value = '';
+      sendBtn.disabled = true;
+      addMessage('user', message);
+      const loading = addMessage('assistant', 'Thinking...');
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            document_context: documentText.value.trim().slice(0, 6000)
+          })
+        });
+        const data = await response.json();
+        loading.remove();
+        if (!response.ok || data.ok === false) {
+          addMessage('assistant', data.error || 'Request failed.', 'error');
+        } else {
+          addMessage('assistant', data.reply || data.message || '');
+        }
+      } catch {
+        loading.remove();
+        addMessage('assistant', 'Network or server error.', 'error');
+      } finally {
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>
