@@ -23,6 +23,18 @@ examples/website-widget/      Website chatbot widget for Shopify, cPanel, WordPr
 - No model name shown to users
 - No frontend exposure of API keys
 
+## For developers, prompt engineers, and vibe coders
+
+This repository is designed so developers, prompt engineers, vibe coders, and website owners can use the GitHub URL with AI coding tools such as ChatGPT, Gemini, Claude, Cursor, Replit, or similar assistants.
+
+Use this public message with your preferred AI coding tool:
+
+```text
+Use this Realigns GitHub starter to integrate Realigns AI into my website or app. Keep the Realigns API key server-side only. Do not expose the API key in frontend JavaScript. Choose the best starter for my platform: PHP/cPanel, Node.js Express, Shopify, WordPress, Hostinger, or a normal website chatbot.
+```
+
+The goal is to reduce technical hard work for integration. Users still need their own Realigns API key and basic hosting access, but the starter provides the structure for safe installation.
+
 ## Test your Realigns AI API key with cURL
 
 Before installing any starter, you can test your API key directly from Terminal:
