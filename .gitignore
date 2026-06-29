@@ -1,0 +1,6 @@
+config.local.php
+storage/*.jsonl
+storage/*.log
+storage/documents/*
+.DS_Store
+!storage/documents/.gitkeep
