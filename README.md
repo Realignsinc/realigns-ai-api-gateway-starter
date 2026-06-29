@@ -1,15 +1,15 @@
 # Realigns Inc. AI API Gateway Starter
 
-Open-source starter kits for using the Realigns AI API Gateway from browser and server apps.
+Open-source starter kits for using the Realigns AI API Gateway from browser, server, and website chatbot integrations.
 
-Users can upload the PHP folder to shared hosting/cPanel, run the Node.js Express example locally/server-side, or add the website chatbot widget to cPanel, Hostinger, Shopify, and normal websites. In all examples, the Realigns AI API key stays server-side.
+This repository includes a PHP web tool, a Node.js Express example, and a website chatbot widget for Shopify, cPanel, WordPress, Hostinger, and normal websites. In every option, the Realigns AI API key stays server-side and is never exposed in frontend JavaScript.
 
 ## Available starters
 
 ```text
-Root PHP/cPanel starter       Simple PHP hosting and cPanel
+Root PHP web tool             PHP/cPanel browser chat tool
 examples/node-express/        Node.js + Express backend example
-examples/website-widget/      Website chatbot widget for cPanel, Hostinger, Shopify
+examples/website-widget/      Website chatbot widget for Shopify, cPanel, WordPress, Hostinger
 ```
 
 ## Shared features
@@ -23,7 +23,9 @@ examples/website-widget/      Website chatbot widget for cPanel, Hostinger, Shop
 - No model name shown to users
 - No frontend exposure of API keys
 
-## PHP/cPanel starter
+## PHP web tool / cPanel starter
+
+The root project is a simple PHP web tool for shared hosting, cPanel, Hostinger PHP hosting, and normal PHP websites.
 
 ### Requirements
 
@@ -117,9 +119,10 @@ examples/website-widget/
 
 It is designed for:
 
+- Shopify websites and Shopify theme/custom liquid snippets
 - cPanel websites
+- WordPress websites where custom HTML/footer scripts are allowed
 - Hostinger websites
-- Shopify themes/custom liquid
 - Normal HTML/PHP websites
 
 ### Install idea
@@ -156,6 +159,33 @@ Paste your private Realigns AI API key in `config.local.php`, then add this snip
 
 Shopify users should host the PHP proxy on their own domain/server and paste only the widget script snippet into Shopify theme/custom liquid code. Do not paste the API key into Shopify.
 
+WordPress users can paste the widget snippet into a footer/custom HTML area or a safe header-footer script plugin, while keeping the PHP proxy and API key on their own server.
+
+## Examples folder
+
+```text
+examples/
+├── node-express/
+│   ├── server.js
+│   ├── package.json
+│   ├── .env.example
+│   ├── public/index.html
+│   └── README.md
+└── website-widget/
+    ├── README.md
+    ├── widget/
+    │   ├── realigns-chat-widget.js
+    │   └── realigns-chat-widget.css
+    ├── php-proxy/
+    │   ├── chat.php
+    │   ├── config.local.example.php
+    │   └── .htaccess
+    └── install-snippets/
+        ├── cpanel.html
+        ├── hostinger.html
+        └── shopify-theme-liquid.html
+```
+
 ## Files
 
 ```text
@@ -191,7 +221,7 @@ For PDF/DOCX parsing, copy and paste the document text into the document box or 
 
 ## API endpoints
 
-PHP starter:
+PHP web tool:
 
 ```text
 /api/chat.php
