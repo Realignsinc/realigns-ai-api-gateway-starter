@@ -1,0 +1,19 @@
+{
+  "name": "realigns-ai-api-gateway-node-express-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js Express example for Realigns AI API Gateway with server-side API key protection.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
