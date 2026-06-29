@@ -23,6 +23,19 @@ examples/website-widget/      Website chatbot widget for Shopify, cPanel, WordPr
 - No model name shown to users
 - No frontend exposure of API keys
 
+## Test your Realigns AI API key with cURL
+
+Before installing any starter, you can test your API key directly from Terminal:
+
+```bash
+curl -X POST https://gpt-api.realignsinc.com/ai/chat \
+-H "Content-Type: application/json" \
+-H "x-api-key: rk_live_YOUR_REALIGNS_API_KEY_HERE" \
+-d '{"prompt":"Say hello."}'
+```
+
+Replace `rk_live_YOUR_REALIGNS_API_KEY_HERE` with your own Realigns AI API key. Do not commit or expose your real key publicly.
+
 ## PHP web tool / cPanel starter
 
 The root project is a simple PHP web tool for shared hosting, cPanel, Hostinger PHP hosting, and normal PHP websites.
